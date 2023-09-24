@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const ListStyle = styled.ul`
     display: flex;
     gap: 20px;
-    flex-direction: column;
+    flex-direction: column-reverse
 `;
 
 export const ItemStyle = styled.li`

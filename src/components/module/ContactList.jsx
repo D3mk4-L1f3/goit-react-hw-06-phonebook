@@ -1,25 +1,22 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/contactsSlice';
-
 import { ListStyle, ItemStyle } from '../styled-component/list.styled';
 import { ButtonStyle } from '../styled-component/form.styled';
 
 export default function List() {
-  const filteredArray = useSelector(state => {
-    const contacts = state.contacts.items;
-    const filter = state.contacts.filter.toLowerCase().replace(/-/g, '');
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state =>
+    state.contacts.filter.toLowerCase().replace(/-/g, '')
+  );
 
-    if (!filter) {
-      return contacts;
-    }
-
-    return contacts.filter(
-      contact =>
-        contact.name.toLowerCase().includes(filter) ||
-        contact.number.replace(/-/g, '').includes(filter)
-    );
-  });
+  const filteredArray = filter
+    ? contacts.filter(
+        contact =>
+          contact.name.toLowerCase().includes(filter) ||
+          contact.number.replace(/-/g, '').includes(filter)
+      )
+    : contacts;
 
   const dispatch = useDispatch();
 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { addContact } from '../../redux/contactsSlice';
-
 import {
   FormAddStyle,
   LabelStyle,
@@ -11,24 +10,22 @@ import {
 } from 'components/styled-component/form.styled';
 
 export default function Form() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [formData, setFormData] = useState({ name: '', number: '' });
   const dispatch = useDispatch();
 
   const handleInputChange = evt => {
     const { name, value } = evt.currentTarget;
-    if (name === 'name') {
-      setName(value);
-    } else if (name === 'number') {
-      setNumber(value);
-    }
+    setFormData({
+      ...formData,
+      [name]: name === 'number' ? value.replace(/[^\d]/g, '') : value,
+    });
   };
 
   const handleSubmit = evt => {
     evt.preventDefault();
+    const { name, number } = formData;
     const formattedName = name.replace(/\b\w/g, l => l.toUpperCase());
-    const formattedNumber = number.replace(/[^\d]/g, '');
-    const phoneNumberWithHyphens = formattedNumber.replace(
+    const phoneNumberWithHyphens = number.replace(
       /^(\d{3})(\d{2})(\d+)$/,
       '$1-$2-$3'
     );
@@ -41,8 +38,7 @@ export default function Form() {
 
     dispatch(addContact(user));
 
-    setName('');
-    setNumber('');
+    setFormData({ name: '', number: '' });
   };
 
   return (
@@ -54,7 +50,7 @@ export default function Form() {
           name="name"
           required
           placeholder="... or full name"
-          value={name}
+          value={formData.name}
           onChange={handleInputChange}
           autoComplete="name"
         />
@@ -66,7 +62,7 @@ export default function Form() {
           name="number"
           required
           placeholder="... only numbers"
-          value={number}
+          value={formData.number}
           onChange={handleInputChange}
           autoComplete="tel"
         />

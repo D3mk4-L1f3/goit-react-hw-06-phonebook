@@ -8,16 +8,11 @@ export default function Filter() {
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
 
-  const handleInputChange = evt => {
-    const { value } = evt.target;
-    dispatch(setFilter(value));
-  };
-
   return (
     <MainContainerStyle>
       <h3>Find contacts by part of name or number</h3>
       <InputStyle
-        onChange={handleInputChange}
+        onChange={evt => dispatch(setFilter(evt.target.value))}
         name="searcher"
         type="text"
         value={filter}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact, deleteContact, setFilter } from '../redux/contactsSlice';
 
@@ -28,7 +28,7 @@ export function App() {
     }
   }, [dispatch]);
 
-  const getFilteredContacts = () => {
+  const filteredContacts = useMemo(() => {
     const filterWithoutDashes = filter.replace(/-/g, '');
 
     if (!filter) {
@@ -40,25 +40,33 @@ export function App() {
         contact.name.toLowerCase().includes(filterWithoutDashes) ||
         contact.number.replace(/-/g, '').includes(filterWithoutDashes)
     );
-  };
+  }, [contacts, filter]);
 
   const setAndFilterContacts = value => {
     dispatch(setFilter(value));
+  };
+
+  const addNewContact = contact => {
+    dispatch(addContact(contact));
+  };
+
+  const removeContact = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   return (
     <MainAppStyle>
       <MainContainerStyle>
         <MainTitleStyle>Phonebook</MainTitleStyle>
-        <ContactForm addContact={addContact} />
+        <ContactForm onAddContact={addNewContact} />
       </MainContainerStyle>
       <MainContainerStyle>
         <SecondTitleStyle>Contacts</SecondTitleStyle>
         <Filter setFilter={setAndFilterContacts} />
       </MainContainerStyle>
       <ContactList
-        filteredArray={getFilteredContacts()}
-        onDeleteContact={deleteContact}
+        filteredArray={filteredContacts}
+        onDeleteContact={removeContact}
       />
     </MainAppStyle>
   );
