@@ -1,15 +1,20 @@
+// ContactForm.jsx
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
+import { addContact } from '../../redux/contactsSlice';
 
 import {
   FormAddStyle,
   LabelStyle,
+  InputStyle,
+  ButtonStyle,
 } from 'components/styled-component/form.styled';
 
-export default function ContactForm({ createContactsArray }) {
+export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleInputChange = evt => {
     const { name, value } = evt.currentTarget;
@@ -35,7 +40,8 @@ export default function ContactForm({ createContactsArray }) {
       number: phoneNumberWithHyphens,
     };
 
-    createContactsArray(user);
+    // Dispatch the action to add a contact
+    dispatch(addContact(user));
 
     setName('');
     setNumber('');
@@ -45,7 +51,7 @@ export default function ContactForm({ createContactsArray }) {
     <FormAddStyle onSubmit={handleSubmit}>
       <LabelStyle>
         Name:
-        <input
+        <InputStyle
           type="text"
           name="name"
           required
@@ -57,21 +63,17 @@ export default function ContactForm({ createContactsArray }) {
       </LabelStyle>
       <LabelStyle>
         Number:
-        <input
+        <InputStyle
           type="tel"
           name="number"
           required
-          placeholder="only phone-number"
+          placeholder="... only numbers"
           value={number}
           onChange={handleInputChange}
           autoComplete="tel"
         />
       </LabelStyle>
-      <button type="submit">Add Contact</button>
+      <ButtonStyle type="submit">Add Contact</ButtonStyle>
     </FormAddStyle>
   );
 }
-
-ContactForm.propTypes = {
-  createContactsArray: PropTypes.func.isRequired,
-};

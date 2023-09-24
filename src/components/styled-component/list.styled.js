@@ -8,6 +8,10 @@ export const ListStyle = styled.ul`
 
 export const ItemStyle = styled.li`
     display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 0 15px;
+    height: 45px;
     justify-content: space-between;
     background-color: rgba(223, 227, 230, 0.3);
     `  

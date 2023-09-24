@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import ContactForm from './module/Form';
-import ContactList from './module/List';
-import Filter from './module/Filter';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, deleteContact, setFilter } from '../redux/contactsSlice'; // Import the actions
+
+import ContactForm from './module/ContactForm';
+import ContactList from './module/ContactList';
+import Filter from './module/ContactFilter';
 
 import {
   MainAppStyle,
+  MainContainerStyle,
   MainTitleStyle,
   SecondTitleStyle,
 } from './styled-component/app.styled';
 
 export function App() {
-  const [contacts, setContacts] = useState([
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  ]);
-
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.contacts.filter);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    // Load contacts from local storage on initial render
     const storedContacts = localStorage.getItem('contacts');
-
     if (storedContacts) {
-      setContacts(JSON.parse(storedContacts));
+      const parsedContacts = JSON.parse(storedContacts);
+      // Dispatch the action to add contacts to the Redux store
+      parsedContacts.forEach(contact => {
+        dispatch(addContact(contact));
+      });
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const contactFilter = value => {
-    setFilter(value.toLowerCase());
-  };
+  }, [dispatch]);
 
   const getFilteredContacts = () => {
     const filterWithoutDashes = filter.replace(/-/g, '');
@@ -46,31 +44,20 @@ export function App() {
     );
   };
 
-  const addContact = userData => {
-    if (
-      contacts.some(
-        contact => contact.name.toLowerCase() === userData.name.toLowerCase()
-      )
-    ) {
-      alert(`${userData.name} is already in contacts`);
-      return;
-    }
-
-    setContacts(prevContacts => [...prevContacts, userData]);
-  };
-
-  const deleteContact = contactId => {
-    setContacts(prevContacts =>
-      prevContacts.filter(contact => contact.id !== contactId)
-    );
+  const setAndFilterContacts = value => {
+    dispatch(setFilter(value));
   };
 
   return (
     <MainAppStyle>
-      <MainTitleStyle>Phonebook</MainTitleStyle>
-      <ContactForm createContactsArray={addContact} />
-      <SecondTitleStyle>Contacts</SecondTitleStyle>
-      <Filter onFilter={contactFilter} filter={filter} />
+      <MainContainerStyle>
+        <MainTitleStyle>Phonebook</MainTitleStyle>
+        <ContactForm addContact={addContact} />
+      </MainContainerStyle>
+      <MainContainerStyle>
+        <SecondTitleStyle>Contacts</SecondTitleStyle>
+        <Filter setFilter={setAndFilterContacts} />
+      </MainContainerStyle>
       <ContactList
         filteredArray={getFilteredContacts()}
         onDeleteContact={deleteContact}
