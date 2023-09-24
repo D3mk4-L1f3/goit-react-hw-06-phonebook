@@ -8,7 +8,8 @@ const contactsSlice = createSlice({
   },
   reducers: {
     addContact: (state, { payload }) => {
-      state.items.push(payload);
+      const contact = { ...payload, createdAt: new Date().toISOString() };
+      state.items.push(contact);
     },
     deleteContact: (state, { payload }) => {
       state.items = state.items.filter(contact => contact.id !== payload);

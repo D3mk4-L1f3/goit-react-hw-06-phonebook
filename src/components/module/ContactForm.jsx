@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { addContact } from '../../redux/contactsSlice';
 import {
@@ -12,6 +12,7 @@ import {
 export default function Form() {
   const [formData, setFormData] = useState({ name: '', number: '' });
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items);
 
   const handleInputChange = evt => {
     const { name, value } = evt.currentTarget;
@@ -19,6 +20,12 @@ export default function Form() {
       ...formData,
       [name]: name === 'number' ? value.replace(/[^\d]/g, '') : value,
     });
+  };
+
+  const isDuplicateContact = (name, number) => {
+    return contacts.some(
+      contact => contact.name === name && contact.number === number
+    );
   };
 
   const handleSubmit = evt => {
@@ -30,15 +37,18 @@ export default function Form() {
       '$1-$2-$3'
     );
 
-    const user = {
-      name: formattedName,
-      id: nanoid(),
-      number: phoneNumberWithHyphens,
-    };
+    if (isDuplicateContact(formattedName, phoneNumberWithHyphens)) {
+      alert('You have already added the same contact!');
+    } else {
+      const user = {
+        name: formattedName,
+        id: nanoid(),
+        number: phoneNumberWithHyphens,
+      };
 
-    dispatch(addContact(user));
-
-    setFormData({ name: '', number: '' });
+      dispatch(addContact(user));
+      setFormData({ name: '', number: '' });
+    }
   };
 
   return (

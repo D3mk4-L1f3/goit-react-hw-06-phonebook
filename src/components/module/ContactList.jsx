@@ -1,23 +1,14 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/contactsSlice';
-import { ListStyle, ItemStyle } from '../styled-component/list.styled';
+import {
+  ListStyle,
+  ItemStyle,
+  DatedCreate,
+} from '../styled-component/list.styled';
 import { ButtonStyle } from '../styled-component/form.styled';
 
-export default function List() {
-  const contacts = useSelector(state => state.contacts.items);
-  const filter = useSelector(state =>
-    state.contacts.filter.toLowerCase().replace(/-/g, '')
-  );
-
-  const filteredArray = filter
-    ? contacts.filter(
-        contact =>
-          contact.name.toLowerCase().includes(filter) ||
-          contact.number.replace(/-/g, '').includes(filter)
-      )
-    : contacts;
-
+export default function ContactList({ filteredArray }) {
   const dispatch = useDispatch();
 
   const deleteContactHandler = contactId => {
@@ -32,6 +23,9 @@ export default function List() {
             <p>
               {contact.name}: {contact.number}
             </p>
+            <DatedCreate>
+              Created: {new Date(contact.createdAt).toLocaleDateString()}
+            </DatedCreate>
             <ButtonStyle onClick={() => deleteContactHandler(contact.id)}>
               Delete
             </ButtonStyle>

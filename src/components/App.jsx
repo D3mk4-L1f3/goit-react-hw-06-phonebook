@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact, deleteContact, setFilter } from '../redux/contactsSlice';
+import { addContact, setFilter } from '../redux/contactsSlice';
 
 import ContactForm from './module/ContactForm';
 import ContactList from './module/ContactList';
@@ -50,10 +50,6 @@ export function App() {
     dispatch(addContact(contact));
   };
 
-  const removeContact = contactId => {
-    dispatch(deleteContact(contactId));
-  };
-
   return (
     <MainAppStyle>
       <MainContainerStyle>
@@ -64,10 +60,7 @@ export function App() {
         <SecondTitleStyle>Contacts</SecondTitleStyle>
         <Filter setFilter={setAndFilterContacts} />
       </MainContainerStyle>
-      <ContactList
-        filteredArray={filteredContacts}
-        onDeleteContact={removeContact}
-      />
+      <ContactList filteredArray={filteredContacts} />
     </MainAppStyle>
   );
 }

@@ -16,3 +16,12 @@ export const ItemStyle = styled.li`
     background-color: rgba(223, 227, 230, 0.3);
     `  
 ;
+
+export const DatedCreate = styled.p`
+    font-size: 10px;
+    font-weight: 600;
+    
+    &:hover{
+        scale: 1.4;
+    }
+`;
