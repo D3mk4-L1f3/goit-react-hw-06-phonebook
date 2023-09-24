@@ -1,4 +1,3 @@
-// ContactForm.jsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
@@ -40,7 +39,6 @@ export default function Form() {
       number: phoneNumberWithHyphens,
     };
 
-    // Dispatch the action to add a contact
     dispatch(addContact(user));
 
     setName('');

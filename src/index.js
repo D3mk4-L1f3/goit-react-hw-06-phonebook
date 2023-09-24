@@ -4,10 +4,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 import { App } from './components/App';
 import './index.css';
-import { createRoot } from 'react-dom/client'; // Update this line
+import { createRoot } from 'react-dom/client';
 
 const root = document.getElementById('root');
-const reactRoot = createRoot(root); // Update this line
+const reactRoot = createRoot(root);
 
 reactRoot.render(
   <Provider store={store}>

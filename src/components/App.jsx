@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact, deleteContact, setFilter } from '../redux/contactsSlice'; // Import the actions
+import { addContact, deleteContact, setFilter } from '../redux/contactsSlice';
 
 import ContactForm from './module/ContactForm';
 import ContactList from './module/ContactList';
@@ -19,11 +19,9 @@ export function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Load contacts from local storage on initial render
     const storedContacts = localStorage.getItem('contacts');
     if (storedContacts) {
       const parsedContacts = JSON.parse(storedContacts);
-      // Dispatch the action to add contacts to the Redux store
       parsedContacts.forEach(contact => {
         dispatch(addContact(contact));
       });
