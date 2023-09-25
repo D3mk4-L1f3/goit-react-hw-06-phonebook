@@ -19,7 +19,6 @@ export default function Filter() {
         onChange={handleFilterChange}
         name="searcher"
         type="text"
-        // value={filter}
         placeholder="... searching ..."
       />
     </MainContainerStyle>
