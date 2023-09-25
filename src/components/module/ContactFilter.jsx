@@ -1,21 +1,25 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from '../../redux/contactsSlice';
+import { useDispatch } from 'react-redux';
+import { filter } from '../../redux/filterSlice';
+
 import { MainContainerStyle } from '../styled-component/app.styled';
 import { InputStyle } from '../styled-component/form.styled';
 
 export default function Filter() {
-  const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
+
+  const handleFilterChange = e => {
+    const filterText = e.target.value;
+    dispatch(filter(filterText));
+  };
 
   return (
     <MainContainerStyle>
       <h3>Find contacts by part of name or number</h3>
       <InputStyle
-        onChange={evt => dispatch(setFilter(evt.target.value))}
+        onChange={handleFilterChange}
         name="searcher"
         type="text"
-        value={filter}
+        // value={filter}
         placeholder="... searching ..."
       />
     </MainContainerStyle>

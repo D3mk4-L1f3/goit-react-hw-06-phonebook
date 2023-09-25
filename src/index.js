@@ -1,18 +1,18 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './redux/store';
-import { App } from './components/App';
+import ReactDOM from 'react-dom/client';
+import { App } from 'components/App';
 import './index.css';
-import { createRoot } from 'react-dom/client';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const root = document.getElementById('root');
-const reactRoot = createRoot(root);
+import { Provider } from 'react-redux';
+import { persistor, store } from 'redux/store';
 
-reactRoot.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
 );

@@ -18,10 +18,10 @@ export const ItemStyle = styled.li`
 ;
 
 export const DatedCreate = styled.p`
-    font-size: 10px;
+    font-size: 7px;
     font-weight: 600;
     
     &:hover{
-        scale: 1.4;
+        scale: 1.7;
     }
 `;
